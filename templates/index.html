@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Current Weather</h1>
+<form method="get" action="{{ url_for('index') }}">
+  <input type="text" name="city" value="{{ city }}" placeholder="Enter a city" autofocus required>
+  <select name="units" aria-label="Units" onchange="if (this.form.city.value) this.form.submit()">
+    <option value="imperial" {{ 'selected' if units == 'imperial' }}>Fahrenheit (°F)</option>
+    <option value="metric" {{ 'selected' if units == 'metric' }}>Celsius (°C)</option>
+  </select>
+  <button type="submit">Search</button>
+</form>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+{% if weather %}
+<section class="card">
+  <h2>{{ weather.location }}</h2>
+  <div class="icon" aria-label="{{ weather.description }}">{{ weather.icon }}</div>
+  <div class="temp">{{ weather.temperature }}{{ labels.temp_label }}</div>
+  <div class="desc">{{ weather.description }}</div>
+  <ul>
+    <li>Feels like: {{ weather.feels_like }}{{ labels.temp_label }}</li>
+    <li>Humidity: {{ weather.humidity }}%</li>
+    <li>Wind: {{ weather.wind }} {{ labels.wind_label }}</li>
+  </ul>
+</section>
+{% endif %}
+{% endblock %}
